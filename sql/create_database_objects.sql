@@ -1,5 +1,5 @@
 CREATE TABLE awsm_PageSecurity(
-	uri VARCHAR(1000) NOT NULL PRIMARY KEY,
-	securityLastUpdated date not null,
-	groups varchar(1000)
+	uri VARCHAR(700) NOT NULL PRIMARY KEY,
+	securityLastUpdated timestamp not null,
+	groups varchar(700)
 );
