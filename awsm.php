@@ -1,15 +1,14 @@
+<?php namespace awsm;
 /**
 * Copyright (c) 2013 simonw.
 * All rights reserved. This program and the accompanying materials
 * are made available under the terms of the GNU Public License v2.0
 * which accompanies this distribution, and is available at
 * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-* 
+*
 * Contributors:
 *     simonw - initial API and implementation
 **/
-<?php namespace awsm;
-
 
 require_once('rls_implementation/SecurityManager.php');
 require_once( "$IP/includes/GlobalFunctions.php" );
@@ -29,9 +28,8 @@ wfErrorLog( "Extension Loading", '/tmp/awsm.log\n' );
  * 		5)	Anonymous access - easy enough to disable
  * 		6)	We need to check file uploads
  * 		7)	What links here
- * 		8)	The various special pages - QueryPage.php could be a base for this - currently investigating.  
- * 			Could patch preProcessResults in QueryPage.php to implement a new hoo, maybe in execute at line 513, 
- * 			which would apply RLS _after_ caching.  Need to prototype this.
+ * 		8)	The various special pages - QueryPage.php could be a base for this - have found a way to do it that covers most of the pages, and we can hide specific pages
+ * 			that present us any issues.
  * 		9)	If a page you can't see is on your watchlist, you can see the comments for changes but not the changes themselves
  * 
  * 
@@ -45,5 +43,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 
 
 $wgHooks['userCan'][]='\awsm\rls_implementation\SecurityManager::onUserCan';
+$wgHooks['FetchChangesList'][] = '\awsm\rls_implementation\SecurityManager::onFetchChangesList';
+
 
 wfErrorLog("Extension Loaded", '/tmp/awsm.log\n');
