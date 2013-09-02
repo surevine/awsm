@@ -12,7 +12,7 @@
 **/
 
 require_once( "$IP/includes/GlobalFunctions.php" );
-//require_once( "$IP/includes/db/DatabaseUtility.php" );
+require_once( "$IP/extensions/awsm/security_business_logic/SecurityMarkingLogic.php" );
 
 wfErrorLog("Loading Access Decision Manager\n", '/tmp/awsm.log');
 
@@ -20,18 +20,26 @@ class AccessDecisionManager
 {
 
 	public static function canUserSeePage ( $user, $title) 
-	{	
-		if (substr($user, -1) === '2') {
-			//User 2 can't access pages ending with a '1'
-			return !(substr($title, -1) === '1');
+	{
+		$groupsForPage=SecurityMarkingLogic::getSecurityMarking($title);
+		
+		if ( ! $groupsForPage) {
+			return true; //Shortcut - no groups == yes, you can see it
 		}
 		
-		if (substr($user, -1) === '1') {
-			//User 1 can't access pages ending with a '2'
-			//User 2 can't access pages ending with a '1'
-			return !(substr($title, -1) === '2');
+		$groupsForUser=SecurityMarkingLogic::getGroupsForCurrentUser();
+		
+		$combined_groups=array_merge($groupsForPage,$groupsForUser);
+		
+		
+		if(array_unique($combined_groups) === $groupsForUser) {
+			wfErrorLog("Access granted to " . $user . " for " . $title . " \n", '/tmp/awsm.log');
+			return true;
 		}
-		return true;	
+		else {
+			wfErrorLog("Access forbidden to " . $user . " for " . $title . " \n", '/tmp/awsm.log');
+			return false;
+		}
 	}
 }
 

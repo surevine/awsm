@@ -14,8 +14,6 @@
 require_once( "$IP/includes/GlobalFunctions.php" );
 require_once( "$IP/extensions/awsm/security_business_logic/AccessDecisionManager.php" );
 
-//require_once( "$IP/includes/db/DatabaseUtility.php" );
-
 wfErrorLog("Loading Security Manager\n", '/tmp/awsm.log');
 
 class SecurityManager
