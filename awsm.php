@@ -11,6 +11,8 @@
 **/
 
 require_once('rls_implementation/SecurityManager.php');
+require_once('security_user_interface/SecurityUIHandler.php');
+
 require_once( "$IP/includes/GlobalFunctions.php" );
 
 wfErrorLog( "Extension Loading", '/tmp/awsm.log\n' );
@@ -44,6 +46,6 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 
 $wgHooks['userCan'][]='\awsm\rls_implementation\SecurityManager::onUserCan';
 $wgHooks['FetchChangesList'][] = '\awsm\rls_implementation\SecurityManager::onFetchChangesList';
-
+$wgHooks['BeforePageDisplay'][] = '\awsm\security_user_interface\SecurityUIHandler::onBeforePageDisplay';
 
 wfErrorLog("Extension Loaded", '/tmp/awsm.log\n');

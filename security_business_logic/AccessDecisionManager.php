@@ -32,7 +32,7 @@ class AccessDecisionManager
 		$combined_groups=array_merge($groupsForPage,$groupsForUser);
 		
 		
-		if(array_unique($combined_groups) === $groupsForUser) {
+		if(sizeof(array_unique($combined_groups)) === sizeof($groupsForUser)) {
 			wfErrorLog("Access granted to " . $user . " for " . $title . " \n", '/tmp/awsm.log');
 			return true;
 		}
