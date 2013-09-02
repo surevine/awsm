@@ -23,13 +23,15 @@ wfErrorLog( "Extension Loading", '/tmp/awsm.log\n' );
  * List of things we need to handle:
  * 
  * 		1)  Search results
- * 		2)  Recent changes
+ * 		2)  Recent changes - we can use the FetchChangesList hook to handle this, but we haven't prototyped it yet
  * 		3)  Transclusion (can this be done form outside the template namespace?)
  * 		4)  Random page can select a protected page, but it doesn't show the content
- * 		5)	Anonymous access
+ * 		5)	Anonymous access - easy enough to disable
  * 		6)	We need to check file uploads
  * 		7)	What links here
- * 		8)	The various special pages
+ * 		8)	The various special pages - QueryPage.php could be a base for this - currently investigating.  
+ * 			Could patch preProcessResults in QueryPage.php to implement a new hoo, maybe in execute at line 513, 
+ * 			which would apply RLS _after_ caching.  Need to prototype this.
  * 		9)	If a page you can't see is on your watchlist, you can see the comments for changes but not the changes themselves
  * 
  * 
