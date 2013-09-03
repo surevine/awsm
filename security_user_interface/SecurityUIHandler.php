@@ -13,6 +13,7 @@
 
 require_once( "$IP/includes/GlobalFunctions.php" );
 require_once( "$IP/extensions/awsm/security_business_logic/SecurityMarkingLogic.php" );
+require_once( "$IP/extensions/awsm/security_business_logic/SecurityMarkingParser.php" );
 
 
 class SecurityUIHandler
@@ -32,9 +33,15 @@ class SecurityUIHandler
 		
 	}
 	
-	public static function onPageContentSave( $wikiPage, $user, $content, $summary,	$isMinor, $isWatch, $section ) {
-		
-		
+	public static function onPageContentSave( &$wikiPage, &$user, &$content, &$summary,	$isMinor, $isWatch, $section ) {
+		$parsedContent = \awsm\security_business_logic\SecurityMarkingParser::parseFromPageContent($content);
+		if ( ! ($parsedContent === FALSE)) {
+			$securityMarking = $parsedContent["securityMarking"];
+				
+			\awsm\security_business_logic\SecurityMarkingLogic::setSecurityMarking($wikiPage->getTitle(), $securityMarking);
+			$content = new \WikitextContent($parsedContent["pageContent"]);
+		}
+		return true;
 	}
 	
 }

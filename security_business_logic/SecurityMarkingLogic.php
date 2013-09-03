@@ -45,5 +45,40 @@ class SecurityMarkingLogic
 		return $rV;
 	}
 	
+	public static function setSecurityMarking ( $pageTitle, $securityMarking )
+	{
+		$row = array (
+			'uri' 					=> 	'wiki://'.$pageTitle,
+			'groups'				=>	$securityMarking
+		);
+		
+		//Note that the next version of MediaWiki (1.22) will have upsert support, which will make this a lot neater
+		if (SecurityMarkingLogic::doesPageHaveSecurityMarking($pageTitle)) {
+			wfErrorLog("Updating existing security marking for ". $pageTitle ." to " . $securityMarking."\n", '/tmp/awsm.log');
+			$dbw = wfGetDB ( DB_MASTER );
+			$dbw->update(
+							'awsm_PageSecurity',
+							$row,
+							array('uri = "'.'wiki://'.$pageTitle.'"')
+						);
+		}
+		else {
+			wfErrorLog("Writing new security marking for ". $pageTitle ." : ". $securityMarking ."\n", '/tmp/awsm.log');
+			$dbw = wfGetDB ( DB_MASTER );
+			$dbw->insert(
+							'awsm_PageSecurity',
+							array($row)
+						);
+		}
+	}
+	
+	protected static function doesPageHaveSecurityMarking( $pageTitle) {
+		if (SecurityMarkingLogic::getSecurityMarking($pageTitle)) {
+			return true;
+		}
+		return false;
+	}
+	
+	
 
 }
