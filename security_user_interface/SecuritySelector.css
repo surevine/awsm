@@ -1,0 +1,8 @@
+.awsm_securityLabel {
+	text-align: center;
+	border-style: double;
+	display: block;
+	margin-left: 25%;
+	margin-right: 25%;
+	border-color: red;
+}

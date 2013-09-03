@@ -20,12 +20,21 @@ class SecurityUIHandler
 	public static function onBeforePageDisplay( \OutputPage &$out, \Skin &$skin ) {
 		$pageTitle = $out->getPageTitle();
 		$groups = \awsm\security_business_logic\SecurityMarkingLogic::getSecurityMarking($pageTitle);
-		if ($groups) {
-			$groupsStr = implode(' ', $groups)
+		
+		if ( $groups&& sizeof($groups)>0 ) {
+			$groupsStr = implode(' ', $groups);
 			wfErrorLog("Drawing display UI for ". $pageTitle ."\n", '/tmp/awsm.log');
-			$out->addInlineScript("alert('Security Marking is:  ". $groupsStr ."')");
+			$out->addScript("<script type=\"text/javascript\" src=\"/w/extensions/awsm/security_user_interface/SecuritySelector.js\"></script>");
+			$out->addInlineScript("awsm_renderSecurityMarking(\"". $groupsStr ."\")");
+			$out->addStyle('/w/extensions/awsm/security_user_interface/SecuritySelector.css');
 		}
 		return true;
 		
 	}
+	
+	public static function onPageContentSave( $wikiPage, $user, $content, $summary,	$isMinor, $isWatch, $section ) {
+		
+		
+	}
+	
 }
