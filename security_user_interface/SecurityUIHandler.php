@@ -44,4 +44,34 @@ class SecurityUIHandler
 		return true;
 	}
 	
+	public static function showEditFormfields( &$editpage, $out ) {
+		wfErrorLog("Drawing edit form for ". $editpage->getTitle() ."\n", '/tmp/awsm.log');
+				
+		$existingSecurityMarking = \awsm\security_business_logic\SecurityMarkingLogic::getSecurityMarking($editpage->getTitle());
+		if ($existingSecurityMarking === null) {
+			$existingSecurityMarking="(no security groups set)";
+		}
+		else {
+			$existingSecurityMarking=implode(" ", $existingSecurityMarking);
+		}
+		
+		$editpage->editFormTextBeforeContent .= '<div id="awsm_container"><button class="ui-button" id="awsm_securityMarking">' . $existingSecurityMarking  . '</button></div>';
+		$out->addScript("<script type=\"text/javascript\" src=\"/w/extensions/awsm/security_user_interface/SecuritySelector.js\"></script>");
+		$out->addScript("<script type=\"text/javascript\" src=\"/w/extensions/awsm/security_user_interface/jquery-ui-1.10.3.custom.min.js\"></script>");
+		$out->addStyle('/w/extensions/awsm/security_user_interface/SecuritySelector.css');
+		
+		//Tweak the JQuery theme here
+		$out->addStyle('/w/extensions/awsm/security_user_interface/themes/smoothness/jquery-ui.min.css');
+		$out->addStyle('/w/extensions/awsm/security_user_interface/themes/smoothness/jquery.ui.theme.css');
+		
+		
+		$availableMarkings=\awsm\security_business_logic\SecurityMarkingLogic::getGroupsForCurrentUser(); //Set markings available for this user to select
+		$out->addInlineScript("awsm_setCurrentUserGroups(\"".implode(" ", $availableMarkings)."\")");
+		$out->addInlineScript("awsm_renderSecuritySelector()");
+		$out->addInlineScript("awsm_setCurrentPageGroups(\"".$existingSecurityMarking."\")");
+		
+		
+		return true;
+	}
+	
 }

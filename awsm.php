@@ -48,6 +48,6 @@ $wgHooks['userCan'][]='\awsm\rls_implementation\SecurityManager::onUserCan';
 $wgHooks['FetchChangesList'][] = '\awsm\rls_implementation\SecurityManager::onFetchChangesList';
 $wgHooks['BeforePageDisplay'][] = '\awsm\security_user_interface\SecurityUIHandler::onBeforePageDisplay';
 $wgHooks['PageContentSave'][] = '\awsm\security_user_interface\SecurityUIHandler::onPageContentSave';
-
+$wgHooks['EditPage::showEditForm:fields'][] = '\awsm\security_user_interface\SecurityUIHandler::showEditFormFields';
 
 wfErrorLog("Extension Loaded", '/tmp/awsm.log\n');
