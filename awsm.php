@@ -12,10 +12,7 @@
 
 require_once('rls_implementation/SecurityManager.php');
 require_once('security_user_interface/SecurityUIHandler.php');
-
 require_once( "$IP/includes/GlobalFunctions.php" );
-
-wfErrorLog( "Extension Loading", '/tmp/awsm.log\n' );
 
 
 /**
@@ -49,5 +46,4 @@ $wgHooks['FetchChangesList'][] = '\awsm\rls_implementation\SecurityManager::onFe
 $wgHooks['BeforePageDisplay'][] = '\awsm\security_user_interface\SecurityUIHandler::onBeforePageDisplay';
 $wgHooks['PageContentSave'][] = '\awsm\security_user_interface\SecurityUIHandler::onPageContentSave';
 $wgHooks['EditPage::showEditForm:fields'][] = '\awsm\security_user_interface\SecurityUIHandler::showEditFormFields';
-
-wfErrorLog("Extension Loaded", '/tmp/awsm.log\n');
+$wgHooks['SpecialSearchResults'][] = '\awsm\rls_implementation\SecurityManager::onSpecialSearchResults';

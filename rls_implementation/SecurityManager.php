@@ -14,8 +14,6 @@
 require_once( "$IP/includes/GlobalFunctions.php" );
 require_once( "$IP/extensions/awsm/security_business_logic/AccessDecisionManager.php" );
 
-wfErrorLog("Loading Security Manager\n", '/tmp/awsm.log');
-
 class SecurityManager
 {
 	public static function onUserCan ( &$title, &$user, $action, &$result = null ) 
@@ -26,9 +24,13 @@ class SecurityManager
 	
 	public static function onFetchChangesList( $user, $skin, &$list ) {
 		wfErrorLog("Invoking onFetchChangesList for " . $user . "\n", '/tmp/awsm.log');
-		
 		return true;
 	}
+	
+	public static function onSpecialSearchResults( $term, &$titleMatches, &$textMatches ) {
+		wfErrorLog("Invoking onSpecialSearchResults\n", '/tmp/awsm.log');
+		return true;
+	}
+	
+	
 }
-
-wfErrorLog("Security Manager Loaded\n", '/tmp/awsm.log');
