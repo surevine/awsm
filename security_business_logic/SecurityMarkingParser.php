@@ -41,7 +41,17 @@ class SecurityMarkingParser {
 		wfErrorLog("Parsed Security Marking: " . $securityMarking ."\n", '/tmp/awsm.log');
 		wfErrorLog("New first line: " . $newFirstLine ."\n", '/tmp/awsm.log');
 		
-		$newContent = $newFirstLine . substr($nativeData, strpos($nativeData, "\n")); 		
+		$newlinePosition = strpos($nativeData, "\n");
+		wfErrorLog("Newline position: " . $newlinePosition . "\n" , '/tmp/awsm.log');
+		
+		if ($newlinePosition) {
+			$newContent = $newFirstLine . substr($nativeData, strpos($nativeData, "\n"));
+		}
+		else {
+			$newContent = $newFirstLine;
+		} 		
+		
+		wfErrorLog("New content: " . $newContent . "\n", '/tmp/awsm.log');
 		
 		$retVal = array (
 						'securityMarking'	=> $securityMarking,
