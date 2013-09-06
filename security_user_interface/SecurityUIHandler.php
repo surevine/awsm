@@ -19,18 +19,35 @@ require_once( "$IP/extensions/awsm/security_business_logic/SecurityMarkingParser
 class SecurityUIHandler
 {
 	public static function onBeforePageDisplay( \OutputPage &$out, \Skin &$skin ) {
+				
 		$pageTitle = $out->getPageTitle();
-		$groups = \awsm\security_business_logic\SecurityMarkingLogic::getSecurityMarking($pageTitle);
-		
-		if ( $groups&& sizeof($groups)>0 ) {
-			$groupsStr = implode(' ', $groups);
-			wfErrorLog("Drawing display UI for ". $pageTitle ."\n", '/tmp/awsm.log');
-			$out->addScript("<script type=\"text/javascript\" src=\"/w/extensions/awsm/security_user_interface/SecuritySelector.js\"></script>");
-			$out->addInlineScript("awsm_renderSecurityMarking(\"". $groupsStr ."\")");
-			$out->addStyle('/w/extensions/awsm/security_user_interface/SecuritySelector.css');
+		if ($pageTitle=="Search results") {
+			//$out=SecurityUIHandler::filterSearchResults($out);
 		}
-		return true;
+		else {
+			$groups = \awsm\security_business_logic\SecurityMarkingLogic::getSecurityMarking($pageTitle);
+			
+			if ( $groups&& sizeof($groups)>0 ) {
+				$groupsStr = implode(' ', $groups);
+				wfErrorLog("Drawing display UI for ". $pageTitle ."\n", '/tmp/awsm.log');
+				$out->addScript("<script type=\"text/javascript\" src=\"/w/extensions/awsm/security_user_interface/SecuritySelector.js\"></script>");
+				$out->addInlineScript("awsm_renderSecurityMarking(\"". $groupsStr ."\")");
+				$out->addStyle('/w/extensions/awsm/security_user_interface/SecuritySelector.css');
+			}
+		}
+		return true;		
+	}
+	
+	protected static function filterSearchResults(\OutputPage &$outPage) {
 		
+		$html = $outPage->getHTML();
+		wfErrorLog("Search Result HTML: ". $html ."\n", '/tmp/awsm.log');
+		$outPage->clearHTML();
+		//foreach(preg_split("/((\r?\n)|(\r\n?))/", $subject) as $line){
+			// do stuff with $line
+		//}
+		
+		return $outPage;
 	}
 	
 	public static function onPageContentSave( &$wikiPage, &$user, &$content, &$summary,	$isMinor, $isWatch, $section ) {
@@ -69,7 +86,6 @@ class SecurityUIHandler
 		$out->addInlineScript("awsm_setCurrentUserGroups(\"".implode(" ", $availableMarkings)."\")");
 		$out->addInlineScript("awsm_renderSecuritySelector()");
 		$out->addInlineScript("awsm_setCurrentPageGroups(\"".$existingSecurityMarking."\")");
-		
 		
 		return true;
 	}

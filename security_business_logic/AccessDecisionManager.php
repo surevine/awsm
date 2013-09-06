@@ -14,12 +14,10 @@
 require_once( "$IP/includes/GlobalFunctions.php" );
 require_once( "$IP/extensions/awsm/security_business_logic/SecurityMarkingLogic.php" );
 
-wfErrorLog("Loading Access Decision Manager\n", '/tmp/awsm.log');
-
 class AccessDecisionManager
 {
 
-	public static function canUserSeePage ( $user, $title) 
+	public static function canUserSeePage ($title) 
 	{
 		$groupsForPage=SecurityMarkingLogic::getSecurityMarking($title);
 		
@@ -33,14 +31,12 @@ class AccessDecisionManager
 		
 		
 		if(sizeof(array_unique($combined_groups)) === sizeof($groupsForUser)) {
-			wfErrorLog("Access granted to " . $user . " for " . $title . " \n", '/tmp/awsm.log');
+			wfErrorLog("Access granted for " . $title . " \n", '/tmp/awsm.log');
 			return true;
 		}
 		else {
-			wfErrorLog("Access forbidden to " . $user . " for " . $title . " \n", '/tmp/awsm.log');
+			wfErrorLog("Access forbidden for " . $title . " \n", '/tmp/awsm.log');
 			return false;
 		}
 	}
 }
-
-wfErrorLog("Access Decision Manager Loaded\n", '/tmp/awsm.log');
