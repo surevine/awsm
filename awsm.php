@@ -42,8 +42,8 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 
 
 $wgHooks['userCan'][]='\awsm\rls_implementation\SecurityManager::onUserCan';
-$wgHooks['FetchChangesList'][] = '\awsm\rls_implementation\SecurityManager::onFetchChangesList';
 $wgHooks['BeforePageDisplay'][] = '\awsm\security_user_interface\SecurityUIHandler::onBeforePageDisplay';
 $wgHooks['PageContentSave'][] = '\awsm\security_user_interface\SecurityUIHandler::onPageContentSave';
 $wgHooks['EditPage::showEditForm:fields'][] = '\awsm\security_user_interface\SecurityUIHandler::showEditFormFields';
 $wgHooks['SpecialSearchResults'][] = '\awsm\rls_implementation\SecurityManager::onSpecialSearchResults';
+$wgHooks['OldChangesListRecentChangesLine'][] = '\awsm\rls_implementation\SecurityManager::onOldChangesListRecentChangesLine';

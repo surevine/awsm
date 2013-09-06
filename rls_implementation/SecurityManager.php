@@ -17,19 +17,11 @@ require_once( "$IP/extensions/awsm/rls_implementation/FilteredResultsSet.php" );
 
 class SecurityManager
 {
-	public static function onUserCan ( &$title, &$user, $action, &$result = null ) 
-	{
-		wfErrorLog("Invoking onUserCan for title " . $title . ", user " . $user . " and action " . $action . "\n", '/tmp/awsm.log');
+	public static function onUserCan ( &$title, &$user, $action, &$result = null ) 	{
 		return \awsm\security_business_logic\AccessDecisionManager::canUserSeePage($title);
 	}
 	
-	public static function onFetchChangesList( $user, $skin, &$list ) {
-		wfErrorLog("Invoking onFetchChangesList for " . $user . "\n", '/tmp/awsm.log');
-		return true;
-	}
-	
 	public static function onSpecialSearchResults( $term, &$titleMatches, &$textMatches ) {
-		wfErrorLog("Invoking onSpecialSearchResults\n", '/tmp/awsm.log');
 		
 		if ($titleMatches) {
 			$titleMatches = new FilteredResultsSet($titleMatches);
@@ -41,4 +33,9 @@ class SecurityManager
 	}
 	
 	
+	//Note that we need to add 
+	public static function onOldChangesListRecentChangesLine( &$changeslist, &$s, $rc, &$classes ) {
+		$pageTitle=$rc->getTitle();
+		return \awsm\security_business_logic\AccessDecisionManager::canUserSeePage($pageTitle);
+	}
 }
