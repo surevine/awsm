@@ -122,8 +122,8 @@ function awsm_applySelectedGroups() {
 }
 
 function awsm_applySelectedSecurityMarking() {
-	var groupsToSet=CURRENT_PAGE_GROUPS
-	if (CURRENT_PAGE_GROUPS=="(no security groups set)") {
+	var groupsToSet=CURRENT_PAGE_GROUPS;
+	if (groupsToSet=="(no security groups set)") {
 		groupsToSet="";
 	}
 	var securityMarkingCode="<securityMarking>"+groupsToSet+"</securityMarking>";
