@@ -122,7 +122,11 @@ function awsm_applySelectedGroups() {
 }
 
 function awsm_applySelectedSecurityMarking() {
-	var securityMarkingCode="<securityMarking>"+CURRENT_PAGE_GROUPS.join(",")+"</securityMarking>";
+	var groupsToSet=CURRENT_PAGE_GROUPS
+	if (CURRENT_PAGE_GROUPS=="(no security groups set)") {
+		groupsToSet="";
+	}
+	var securityMarkingCode="<securityMarking>"+groupsToSet+"</securityMarking>";
 	var textBox=$("#wpTextbox1")[0];
 	textBox.value=securityMarkingCode+textBox.value;
 }
