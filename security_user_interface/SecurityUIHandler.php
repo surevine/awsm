@@ -24,7 +24,7 @@ class SecurityUIHandler
 
 		$groups = \awsm\security_business_logic\SecurityMarkingLogic::getSecurityMarking($pageTitle);
 			
-		if ( $groups&& sizeof($groups)>0 ) {
+		if ( $groups && sizeof($groups)>0 && !(sizeof($groups)===1 && $groups[0]==="") ) {
 			$groupsStr = implode(' ', $groups);
 			wfErrorLog("Drawing display UI for ". $pageTitle ."\n", '/tmp/awsm.log');
 			$out->addScript("<script type=\"text/javascript\" src=\"/w/extensions/awsm/security_user_interface/SecuritySelector.js\"></script>");

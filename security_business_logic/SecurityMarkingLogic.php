@@ -31,7 +31,7 @@ class SecurityMarkingLogic
 		}
 		$groups= $resultObj->groups;
 		
-		wfErrorLog("Found groups:" . $groups . " for page ". $pageTitle ."\n", '/tmp/awsm.log');	
+		wfErrorLog("Found groups:[" . $groups . "] for page ". $pageTitle ."\n", '/tmp/awsm.log');	
 		
 		return explode(',',$groups);
 	}

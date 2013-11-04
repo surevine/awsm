@@ -123,10 +123,13 @@ function awsm_applySelectedGroups() {
 
 function awsm_applySelectedSecurityMarking() {
 	var groupsToSet=CURRENT_PAGE_GROUPS;
-	if (groupsToSet=="(no security groups set)") {
-		groupsToSet="";
+	var securityMarkingCode="";
+	if (groupsToSet.length==4 && groupsToSet[0]=="(no" && groupsToSet[1]=="security" && groupsToSet[2]=="groups"&&groupsToSet[3]=="set)") {
+		securityMarkingCode="<securityMarking></securityMarking>";
 	}
-	var securityMarkingCode="<securityMarking>"+groupsToSet+"</securityMarking>";
+	else {
+		securityMarkingCode="<securityMarking>"+groupsToSet.join(",")+"</securityMarking>";
+	}
 	var textBox=$("#wpTextbox1")[0];
 	textBox.value=securityMarkingCode+textBox.value;
 }

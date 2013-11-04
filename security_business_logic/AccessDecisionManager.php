@@ -21,7 +21,8 @@ class AccessDecisionManager
 	{
 		$groupsForPage=SecurityMarkingLogic::getSecurityMarking($title);
 		
-		if ( ! $groupsForPage) {
+		wfErrorLog("Groups for page[0] [" . $groupsForPage[0] . "] \n", '/tmp/awsm.log');
+		if ( ! $groupsForPage || (sizeof($groupsForPage)===1 && $groupsForPage[0]==="")) {
 			return true; //Shortcut - no groups == yes, you can see it
 		}
 		
