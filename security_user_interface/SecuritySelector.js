@@ -124,5 +124,5 @@ function awsm_applySelectedGroups() {
 function awsm_applySelectedSecurityMarking() {
 	var securityMarkingCode="<securityMarking>"+CURRENT_PAGE_GROUPS.join(",")+"</securityMarking>";
 	var textBox=$("#wpTextbox1")[0];
-	textBox.innerHTML=securityMarkingCode+textBox.innerHTML;
+	textBox.value=securityMarkingCode+textBox.value;
 }
