@@ -27,8 +27,8 @@ require_once( "$IP/includes/GlobalFunctions.php" );
  * 		5)	Anonymous access - easy enough to disable
  * 		6)	We need to check file uploads
  * 		7)	What links here
- * 		8)	The various special pages - QueryPage.php could be a base for this - have found a way to do it that covers most of the pages, and we can hide specific pages
- * 			that present us any issues.
+ * 		8)	The various special pages - QueryPage.php could be a base for this - have found a way to do it that covers
+ * 			most of the pages, and we can hide specific pages that present us any issues.
  * 		9)	If a page you can't see is on your watchlist, you can see the comments for changes but not the changes themselves
  * 
  * 
@@ -39,7 +39,6 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	echo( "This file is an extension to the MediaWiki software and cannot be used standalone.\n" );
 	die( 1 );
 }
-
 
 $wgHooks['userCan'][]='\awsm\rls_implementation\SecurityManager::onUserCan';
 $wgHooks['BeforePageDisplay'][] = '\awsm\security_user_interface\SecurityUIHandler::onBeforePageDisplay';
