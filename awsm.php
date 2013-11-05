@@ -47,3 +47,4 @@ $wgHooks['PageContentSave'][] = '\awsm\security_user_interface\SecurityUIHandler
 $wgHooks['EditPage::showEditForm:fields'][] = '\awsm\security_user_interface\SecurityUIHandler::showEditFormFields';
 $wgHooks['SpecialSearchResults'][] = '\awsm\rls_implementation\SecurityManager::onSpecialSearchResults';
 $wgHooks['OldChangesListRecentChangesLine'][] = '\awsm\rls_implementation\SecurityManager::onOldChangesListRecentChangesLine';
+$wgHooks['UploadForm:initial'][] = '\awsm\security_user_interface\SecurityUIHandler::renderUploadScurityMarking';

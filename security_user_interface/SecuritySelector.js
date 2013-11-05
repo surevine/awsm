@@ -23,15 +23,16 @@ function awsm_renderSecurityMarking(securityGroups) {
 
 function awsm_renderSecuritySelector() {
 	var button=$("#awsm_securityMarking")[0];
+
 	var existingSecurityGroups = button.innerHTML;
 	
 	if (existingSecurityGroups.length > 20) { //Ensure all the security groups can be seen
 		button.style.cssText='width:'+existingSecurityGroups.length+'em;';
 	}
 	
-	$("#wpSave").click(function() { awsm_applySelectedSecurityMarking();}) //Attach behaviour to the save button
-	$("#awsm_securityMarking").click(function() { awsm_showSecuritySelectorDialogue(); return false;}) //Attach behaviour to security groups button
-
+	$("#wpSave").click(function() { awsm_applySelectedSecurityMarking();});  //Attach behaviour to the save button
+	$('#mw-upload-form').submit(function() {awsm_applySelectedSecurityMarking()}); //... and the uload button
+	$("#awsm_securityMarking").click(function() { awsm_showSecuritySelectorDialogue(); return false;}); //Attach behaviour to security groups button
 	
 	//Create security selector dialogue elements
 	var container=$("#awsm_container")[0];
@@ -131,5 +132,11 @@ function awsm_applySelectedSecurityMarking() {
 		securityMarkingCode="<securityMarking>"+groupsToSet.join(",")+"</securityMarking>";
 	}
 	var textBox=$("#wpTextbox1")[0];
-	textBox.value=securityMarkingCode+textBox.value;
+	if (textBox) {
+		textBox.value=securityMarkingCode+textBox.value;
+	}
+	var titleTextBox=$("#wpUploadDescription")[0];
+	if (titleTextBox) {
+		titleTextBox.value=securityMarkingCode+titleTextBox.value;
+	}
 }

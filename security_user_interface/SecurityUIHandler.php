@@ -15,7 +15,6 @@ require_once( "$IP/includes/GlobalFunctions.php" );
 require_once( "$IP/extensions/awsm/security_business_logic/SecurityMarkingLogic.php" );
 require_once( "$IP/extensions/awsm/security_business_logic/SecurityMarkingParser.php" );
 
-
 class SecurityUIHandler
 {
 	public static function onBeforePageDisplay( \OutputPage &$out, \Skin &$skin ) {
@@ -58,6 +57,24 @@ class SecurityUIHandler
 		}
 		
 		$editpage->editFormTextBeforeContent .= '<div id="awsm_container"><button class="ui-button" id="awsm_securityMarking">' . $existingSecurityMarking  . '</button></div>';
+		SecurityUIHandler::importSecurityResources($out);
+		
+		$out->addInlineScript("awsm_renderSecuritySelector()");
+		$out->addInlineScript("awsm_setCurrentPageGroups(\"".$existingSecurityMarking."\")");
+		
+		return true;
+	}
+	
+	public static function renderUploadScurityMarking( $uploadFormObj ) {
+		wfErrorLog("Upload form being generated " . "\n", "/tmp/awsm.log");
+		SecurityUIHandler::importSecurityResources($uploadFormObj->getOutput());
+		$uploadFormObj->getOutput()->addInlineScript("awsm_renderSecuritySelector()");
+		$old = $uploadFormObj->uploadFormTextTop;
+		$uploadFormObj->uploadFormTextTop = '<div id="awsm_container"><button class="ui-button" id="awsm_securityMarking">(no security groups set)</button></div>' . $old;
+		return true;
+	}
+	
+	public static function importSecurityResources($out) {
 		$out->addScript("<script type=\"text/javascript\" src=\"/w/extensions/awsm/security_user_interface/SecuritySelector.js\"></script>");
 		$out->addScript("<script type=\"text/javascript\" src=\"/w/extensions/awsm/security_user_interface/jquery-ui-1.10.3.custom.min.js\"></script>");
 		$out->addStyle('/w/extensions/awsm/security_user_interface/SecuritySelector.css');
@@ -66,13 +83,8 @@ class SecurityUIHandler
 		$out->addStyle('/w/extensions/awsm/security_user_interface/themes/smoothness/jquery-ui.min.css');
 		$out->addStyle('/w/extensions/awsm/security_user_interface/themes/smoothness/jquery.ui.theme.css');
 		
-		
 		$availableMarkings=\awsm\security_business_logic\SecurityMarkingLogic::getGroupsForCurrentUser(); //Set markings available for this user to select
 		$out->addInlineScript("awsm_setCurrentUserGroups(\"".implode(" ", $availableMarkings)."\")");
-		$out->addInlineScript("awsm_renderSecuritySelector()");
-		$out->addInlineScript("awsm_setCurrentPageGroups(\"".$existingSecurityMarking."\")");
-		
-		return true;
 	}
 	
 }
