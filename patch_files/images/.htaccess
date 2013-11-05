@@ -1,0 +1,4 @@
+<IfModule rewrite_module>
+        RewriteEngine On
+        RewriteRule ^(.*)$ /w/extensions/awsm/rls_implementation/SecureFileAccess.php?path=/images/$1
+</IfModule>
